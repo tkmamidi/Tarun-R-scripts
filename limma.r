@@ -1,24 +1,11 @@
 source("http://bioconductor.org/biocLite.R")
 biocLite("rgl")
-biocLite("ArrayExpress")
-vignette(package="Biobase", "ExpressionSetIntroduction")
-library("Biobase")
 library(limma)
-library(pd.hugene.2.0.st)
-library(hugene20sttranscriptcluster.db)
-library(annotate)
-library(genefilter)
-library(lattice)
-install.packages("rgl",dependencies = TRUE)
-install.packages("digest", type="source")
 library("rgl")
 
-library(gplots)
-library(NMF)
-
-setwd("Z:/Tarun_projects/Tanja_project/limma")
-pheno <- read.csv(file = "All_data_pheno.csv")
-hdat <- read.csv(file = "all_data.csv", row.names = 1)
+setwd("Path/to/directory/")
+pheno <- read.csv(file = "pheno.csv")
+hdat <- read.csv(file = "data.csv", row.names = 1)
 
 
 rownames(pheno) <- pheno$sample
@@ -41,7 +28,7 @@ design
 fit <- lmFit(hdat, design)
 names(fit)
 
-fit1 <- contrasts.fit(fit, c(-1,0,0,-1,0,0,1,1))
+fit1 <- contrasts.fit(fit, c(-1,0,0,1,0,0,0,0))
 
 
 
@@ -51,6 +38,6 @@ nrow(topTable(fit1, coef=1, number=10000, lfc=2))
 probeset.list1 <- topTable(fit1, coef=1, number=10000, lfc=2)
 head(probeset.list1)
 
-write.table(probeset.list1, file = "Day-0,3-vs-12,14.txt", sep="\t", quote = F, row.names=T)
-volcanoplot(fit1,  main = "Day-0,3 VS Day-12,14")
+write.table(probeset.list1, file = "Output.txt", sep="\t", quote = F, row.names=T)
+volcanoplot(fit1,  main = "Day-0 VS Day-3")
 fit1
